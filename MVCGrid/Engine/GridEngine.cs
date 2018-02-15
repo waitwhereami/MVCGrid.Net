@@ -34,7 +34,7 @@ namespace MVCGrid.Engine
                         string typeString = gridContext.GridDefinition.RenderingEngines[engineName].Type;
                         Type engineType = Type.GetType(typeString, true);
 
-                        renderingEngine = (IMVCGridRenderingEngine)Activator.CreateInstance(engineType, true);
+                        renderingEngine = (IMVCGridRenderingEngine) Activator.CreateInstance(engineType, true);
                     }
                 }
             }
@@ -59,7 +59,7 @@ namespace MVCGrid.Engine
             string typeString = gridDefinition.RenderingEngines[engineName].Type;
             Type engineType = Type.GetType(typeString, true);
 
-            IMVCGridRenderingEngine renderingEngine = (IMVCGridRenderingEngine)Activator.CreateInstance(engineType, true);
+            IMVCGridRenderingEngine renderingEngine = (IMVCGridRenderingEngine) Activator.CreateInstance(engineType, true);
 
             return renderingEngine;
         }
@@ -79,13 +79,13 @@ namespace MVCGrid.Engine
         public RenderingModel GenerateModel(GridContext gridContext)
         {
             int? totalRecords;
-            var rows = ((GridDefinitionBase)gridContext.GridDefinition).GetData(gridContext, out totalRecords);
+            var rows = ((GridDefinitionBase) gridContext.GridDefinition).GetData(gridContext, out totalRecords);
 
             // if a page was requested higher than available pages, requery for first page
             if (rows.Count == 0 && totalRecords.HasValue && totalRecords.Value > 0)
             {
                 gridContext.QueryOptions.PageIndex = 0;
-                rows = ((GridDefinitionBase)gridContext.GridDefinition).GetData(gridContext, out totalRecords);
+                rows = ((GridDefinitionBase) gridContext.GridDefinition).GetData(gridContext, out totalRecords);
             }
 
             var model = PrepModel(totalRecords, rows, gridContext);
@@ -107,6 +107,7 @@ namespace MVCGrid.Engine
                 model.NoResultsMessage = gridContext.GridDefinition.NoResultsMessage;
             }
 
+            model.GridName = gridContext.GridName;
             model.NextButtonCaption = gridContext.GridDefinition.NextButtonCaption;
             model.PreviousButtonCaption = gridContext.GridDefinition.PreviousButtonCaption;
             model.SummaryMessage = gridContext.GridDefinition.SummaryMessage;
@@ -122,7 +123,7 @@ namespace MVCGrid.Engine
                 model.PagingModel.TotalRecords = totalRecords.Value;
 
                 model.PagingModel.FirstRecord = (currentPageIndex * gridContext.QueryOptions.ItemsPerPage.Value) + 1;
-                if(model.PagingModel.FirstRecord > model.PagingModel.TotalRecords) 
+                if (model.PagingModel.FirstRecord > model.PagingModel.TotalRecords)
                 {
                     model.PagingModel.FirstRecord = model.PagingModel.TotalRecords;
                 }
@@ -134,13 +135,15 @@ namespace MVCGrid.Engine
                 model.PagingModel.CurrentPage = currentPageIndex + 1;
 
                 var numberOfPagesD = (model.PagingModel.TotalRecords + 0.0) / (gridContext.QueryOptions.ItemsPerPage.Value + 0.0);
-                model.PagingModel.NumberOfPages = (int)Math.Ceiling(numberOfPagesD);
+                model.PagingModel.NumberOfPages = (int) Math.Ceiling(numberOfPagesD);
 
                 for (int i = 1; i <= model.PagingModel.NumberOfPages; i++)
                 {
                     model.PagingModel.PageLinks.Add(i, HtmlUtility.MakeGotoPageLink(gridContext.GridName, i));
                 }
             }
+
+            model.IsFilterable = gridContext.GridDefinition.Filtering;
 
             model.ClientDataTransferHtmlBlock = MVCGrid.Web.MVCGridHtmlGenerator.GenerateClientDataTransferHtml(gridContext);
 
@@ -180,6 +183,7 @@ namespace MVCGrid.Engine
                     renderingColumn.Onclick = HtmlUtility.MakeSortLink(gridContext.GridName, col.ColumnName, linkDirection);
                     renderingColumn.SortIconDirection = iconDirection;
                 }
+                renderingColumn.IsFilterable = col.EnableFiltering;
             }
         }
 

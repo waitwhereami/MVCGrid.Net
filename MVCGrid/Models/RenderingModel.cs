@@ -26,11 +26,11 @@ namespace MVCGrid.Models
             if (pageToStart < 1) pageToStart = 1;
 
             int pageToEnd = pageToStart + (pagesToDisplay - 1);
-            
+
             if (pageToEnd > NumberOfPages)
             {
                 int diff = pageToEnd - NumberOfPages;
-                
+
                 pageToEnd = NumberOfPages;
                 pageToStart = pageToStart - diff;
             }
@@ -48,6 +48,7 @@ namespace MVCGrid.Models
             Columns = new List<Column>();
             Rows = new List<Row>();
         }
+        public string GridName { get; set; }
         public string HandlerPath { get; set; }
         public string TableHtmlId { get; set; }
         public List<Column> Columns { get; set; }
@@ -65,6 +66,7 @@ namespace MVCGrid.Models
         public PagingModel PagingModel { get; set; }
 
         public string ClientDataTransferHtmlBlock { get; set; }
+        public bool IsFilterable { get; set; }
     }
 
     public class Cell
@@ -90,5 +92,6 @@ namespace MVCGrid.Models
         public string Onclick { get; set; }
         public string HeaderText { get; set; }
         public SortDirection? SortIconDirection { get; set; }
+        public bool IsFilterable { get; set; }
     }
 }
