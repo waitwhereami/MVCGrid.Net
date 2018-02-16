@@ -80,6 +80,21 @@ namespace MVCGrid.Rendering
             }
         }
 
+        private void AppendOnClickCall(string functionName, string functionParameter, StringBuilder sbHtml)
+        {
+            if (!String.IsNullOrWhiteSpace(functionName))
+            {
+                if (!String.IsNullOrWhiteSpace(functionParameter))
+                {
+                    sbHtml.Append(String.Format(" onclick='{0}(\"{1}\")'", functionName, functionParameter));
+                }
+                else
+                {
+                    sbHtml.Append(String.Format(" onclick='{0}'", functionName));
+                }
+            }
+        }
+
         private void RenderBody(Models.RenderingModel model, StringBuilder sbHtml)
         {
             sbHtml.AppendLine("<tbody>");
@@ -88,6 +103,7 @@ namespace MVCGrid.Rendering
             {
                 sbHtml.Append("<tr");
                 AppendCssAttribute(row.CalculatedCssClass, sbHtml);
+                AppendOnClickCall(row.SelectedRowFunction, row.SelectedRowParameter, sbHtml);
                 sbHtml.AppendLine(">");
 
                 foreach (var col in model.Columns)

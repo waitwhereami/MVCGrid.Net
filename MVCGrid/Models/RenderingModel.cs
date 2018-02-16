@@ -83,6 +83,8 @@ namespace MVCGrid.Models
             Cells = new Dictionary<string, Cell>();
         }
         public string CalculatedCssClass { get; set; }
+        public string SelectedRowFunction { get; set; }
+        public string SelectedRowParameter { get; set; }
         public Dictionary<string, Cell> Cells { get; set; }
     }
 

@@ -1,0 +1,26 @@
+﻿@using MVCGrid.Web
+@{
+    ViewBag.Title = "Selected Row";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>It is your responsibility to implement the JavaScript function that the grid will call when the row is clicked. In that function, you may handle style changes / AJAX calls as needed.</p>
+
+@Html.MVCGrid("SelectedRow")
+
+<h3>Code</h3>
+
+<div class="panel panel-default">
+    <div class="panel-heading">View</div>
+    <div class="panel-body">
+        <pre>@@Html.MVCGrid("SelectedRow")</pre>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Inside <strong>MVCGridConfig.cs</strong></div>
+    <div class="panel-body">
+        <pre class="brush: csharp">@CodeSnippetHelper.GetCodeSnippet("SelectedRow")</pre>
+    </div>
+</div>

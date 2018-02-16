@@ -432,6 +432,55 @@ namespace MVCGridExample
                 })
             );
 
+            MVCGridDefinitionTable.Add("SelectedRow", new MVCGridBuilder<Person>(colDefauls)
+                .WithAuthorizationType(AuthorizationType.AllowAnonymous)
+                .AddColumns(cols =>
+                {
+                    cols.Add("Id").WithSorting(false)
+                        .WithValueExpression(p => p.Id.ToString());
+                    cols.Add("LastName").WithHeaderText("Last Name")
+                        .WithValueExpression(p => p.LastName);
+                    cols.Add("FirstName").WithHeaderText("First Name")
+                        .WithValueExpression(p => p.FirstName);
+                    cols.Add("Status").WithSortColumnData("Active")
+                        .WithHeaderText("Status")
+                        .WithValueExpression(p => p.Active ? "Active" : "Inactive");
+                })
+                .WithSorting(true, "LastName")
+                .WithPaging(true, 10, true, 100)
+                .WithSelectedRowFunction("alert")
+                .WithSelectedRowParameterExpression(p => p.Id.ToString())
+                .WithRetrieveDataMethod((context) =>
+                {
+                    var options = context.QueryOptions;
+
+                    int totalRecords;
+                    var repo = DependencyResolver.Current.GetService<IPersonRepository>();
+
+                    bool? active = null;
+                    string fa = options.GetFilterString("Status");
+                    if (!String.IsNullOrWhiteSpace(fa))
+                    {
+                        active = (String.Compare(fa, "active", true) == 0);
+                    }
+
+                    string sortColumn = options.GetSortColumnData<string>();
+
+                    var items = repo.GetData(out totalRecords,
+                        null,
+                        null,
+                        active,
+                        options.GetLimitOffset(), options.GetLimitRowcount(),
+                        sortColumn, options.SortDirection == SortDirection.Dsc);
+
+                    return new QueryResult<Person>()
+                    {
+                        Items = items,
+                        TotalRecords = totalRecords
+                    };
+                })
+            );
+
 
             MVCGridDefinitionTable.Add("ExportGrid", new MVCGridBuilder<Person>(colDefauls)
                 .WithAuthorizationType(AuthorizationType.AllowAnonymous)

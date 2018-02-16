@@ -43,6 +43,7 @@ namespace MVCGrid.Models
             this.ClientSideLoadingMessageFunctionName = gridDefaults.ClientSideLoadingMessageFunctionName;
             this.ClientSideLoadingCompleteFunctionName = gridDefaults.ClientSideLoadingCompleteFunctionName;
             this.Filtering = gridDefaults.Filtering;
+            this.SelectedRowFunction = gridDefaults.SelectedRowFunction;
             //this.RenderingEngine = gridDefaults.RenderingEngine;
             this.TemplatingEngine = gridDefaults.TemplatingEngine;
             this.AdditionalSettings = gridDefaults.AdditionalSettings;
@@ -128,6 +129,11 @@ namespace MVCGrid.Models
         /// </summary>
         public Func<T1, GridContext, string> RowCssClassExpression { get; set; }
 
+        /// <summary>
+        /// Use this to specify what parameter to pass to the SelectedRowFunction based on data for the current row
+        /// </summary>
+        public Func<T1, GridContext, string> SelectedRowParameterExpression { get; set; }
+
         internal override List<Row> GetData(GridContext context, out int? totalRecords)
         {
             List<Row> resultRows = new List<Row>();
@@ -152,6 +158,20 @@ namespace MVCGrid.Models
                     if (!String.IsNullOrWhiteSpace(rowCss))
                     {
                         thisRow.CalculatedCssClass = rowCss;
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(SelectedRowFunction))
+                {
+                    thisRow.SelectedRowFunction = SelectedRowFunction;
+                }
+
+                if (SelectedRowParameterExpression != null)
+                {
+                    string selectedRowParameter = SelectedRowParameterExpression(item, context);
+                    if (!String.IsNullOrWhiteSpace(selectedRowParameter))
+                    {
+                        thisRow.SelectedRowParameter = selectedRowParameter;
                     }
                 }
 
@@ -252,6 +272,11 @@ namespace MVCGrid.Models
         /// Enables filtering on the grid. Note, filtering must also be enabled on each column where filtering is wanted
         /// </summary>
         public bool Filtering { get; set; }
+
+        /// <summary>
+        /// JS function to call when a tr is clicked on the grid.
+        /// </summary>
+        public string SelectedRowFunction { get; set; }
 
         /// <summary>
         /// Text to display when there are no results.

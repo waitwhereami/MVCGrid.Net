@@ -26,6 +26,7 @@ namespace MVCGrid.Models
             ClientSideLoadingMessageFunctionName = null;
             ClientSideLoadingCompleteFunctionName = null;
             Filtering = false;
+            SelectedRowFunction = String.Empty;
             //RenderingEngine = typeof(MVCGrid.Rendering.BootstrapRenderingEngine);
             TemplatingEngine = typeof(MVCGrid.Templating.SimpleTemplatingEngine);
             AdditionalSettings = new Dictionary<string, object>();
@@ -62,6 +63,7 @@ namespace MVCGrid.Models
         public string ClientSideLoadingMessageFunctionName { get; set; }
         public string ClientSideLoadingCompleteFunctionName { get; set; }
         public bool Filtering { get; set; }
+        public string SelectedRowFunction { get; set; }
 
         [Obsolete("RenderingEngine is obsolete. Please user RenderingEngines and DefaultRenderingEngineName")]
         public Type RenderingEngine {

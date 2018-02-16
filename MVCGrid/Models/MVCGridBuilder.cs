@@ -99,6 +99,24 @@ namespace MVCGrid.Models
         }
 
         /// <summary>
+        /// Use this to specify a custom css class based on data for the current row
+        /// </summary>
+        public MVCGridBuilder<T1> WithSelectedRowParameterExpression(Func<T1, GridContext, string> selectedRowParameterExpression)
+        {
+            GridDefinition.SelectedRowParameterExpression = selectedRowParameterExpression;
+            return this;
+        }
+
+        /// <summary>
+        /// Use this to specify a custom css class based on data for the current row
+        /// </summary>
+        public MVCGridBuilder<T1> WithSelectedRowParameterExpression(Func<T1, string> selectedRowParameterExpression)
+        {
+            GridDefinition.SelectedRowParameterExpression = (T1, GridContext) => selectedRowParameterExpression(T1);
+            return this;
+        }
+
+        /// <summary>
         /// A prefix to add to all query string parameters for this grid, for when there are more than 1 grids on the same page
         /// </summary>
         public MVCGridBuilder<T1> WithQueryStringPrefix(string prefix)
@@ -248,6 +266,15 @@ namespace MVCGrid.Models
         public MVCGridBuilder<T1> WithFiltering(bool filtering)
         {
             GridDefinition.Filtering = filtering;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the JS function to be called when a TR in the grid is clicked.
+        /// </summary>
+        public MVCGridBuilder<T1> WithSelectedRowFunction(string functionName)
+        {
+            GridDefinition.SelectedRowFunction = functionName;
             return this;
         }
 

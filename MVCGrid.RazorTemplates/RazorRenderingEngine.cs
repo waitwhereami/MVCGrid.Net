@@ -104,6 +104,18 @@ namespace MVCGrid.RazorTemplates
         return """";
     }
     
+    string AppendOnClickCall(string onClickCall, string onClickCallParameter)
+    {
+        if (!String.IsNullOrWhiteSpace(onClickCall))
+        {
+            if (!String.IsNullOrWhiteSpace(onClickCallParameter))
+            {
+                return String.Format("" onclick='{0}(""{1}"")'"", onClickCall, onClickCallParameter);
+            }
+            return String.Format("" onclick='{0}'"", onClickCall);
+        }
+        return """";
+    }
 }
 
 <table id=""@Model.TableHtmlId"" class=""table table-striped table-bordered"">
@@ -117,7 +129,7 @@ namespace MVCGrid.RazorTemplates
     <tbody>
         @foreach (var row in Model.Rows)
         {
-            <tr@(Raw(AppendCssAttribute(row.CalculatedCssClass)))>
+            <tr@(Raw(AppendCssAttribute(row.CalculatedCssClass)))@(Raw(AppendOnClickCall(row.SelectedRowFunction, row.SelectedRowParameter)))>
                 @foreach (var col in Model.Columns)
                 {
                     var cell = row.Cells[col.Name];

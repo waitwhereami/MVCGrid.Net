@@ -208,6 +208,7 @@
     <Content Include="Content\sh\shCore.js" />
     <Content Include="Content\sh\shThemeDefault.css" />
     <Content Include="Content\stackoverflow_logo.jpg" />
+    <Content Include="Content\_Grid.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -315,6 +316,7 @@
     <Content Include="Views\Demo\AdditionalQueryOptions.cshtml" />
     <Content Include="Views\Demo\CustomRazorView2.cshtml" />
     <Content Include="Views\Demo\Localization.cshtml" />
+    <Content Include="Views\Demo\SelectedRow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Item\" />
