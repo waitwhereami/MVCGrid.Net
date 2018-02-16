@@ -456,20 +456,13 @@ namespace MVCGridExample
 
                     int totalRecords;
                     var repo = DependencyResolver.Current.GetService<IPersonRepository>();
-
-                    bool? active = null;
-                    string fa = options.GetFilterString("Status");
-                    if (!String.IsNullOrWhiteSpace(fa))
-                    {
-                        active = (String.Compare(fa, "active", true) == 0);
-                    }
-
+                    
                     string sortColumn = options.GetSortColumnData<string>();
 
                     var items = repo.GetData(out totalRecords,
                         null,
                         null,
-                        active,
+                        null,
                         options.GetLimitOffset(), options.GetLimitRowcount(),
                         sortColumn, options.SortDirection == SortDirection.Dsc);
 
