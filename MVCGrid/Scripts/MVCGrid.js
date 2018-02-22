@@ -26,9 +26,12 @@ var MVCGrid = new function () {
                 MVCGrid.reloadGrid(obj.name);
             }
         }
-
-        bindToolbarEvents();
     };
+
+    this.resetGrids = function() {
+        currentGrids = [];
+        this.init();
+    }
 
     var applyBoundFilters = function (mvcGridName){
 
@@ -401,7 +404,7 @@ var MVCGrid = new function () {
         var loadingHtmlId = 'MVCGrid_Loading_' + mvcGridName;
         var errorHtmlId = 'MVCGrid_ErrorMessage_' + mvcGridName;
 
-        var gridDef = findGridDef(mvcGridName);;
+        var gridDef = findGridDef(mvcGridName);
 
         var ajaxBaseUrl = handlerPath;
 
@@ -431,6 +434,7 @@ var MVCGrid = new function () {
             },
             success: function (result) {
                 $('#' + tableHolderHtmlId).html(result);
+                bindToolbarEvents();
             },
             error: function (request, status, error) {
                 var errorhtml = $('#' + errorHtmlId).html();
